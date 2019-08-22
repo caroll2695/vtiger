@@ -3,7 +3,23 @@ LABEL maintainer='Nilesh <nilesh@cloudgeni.us>'
 
 # Add basics first
 RUN apk update && apk upgrade && apk add \
-  bash apache2 php7-apache2 curl ca-certificates openssl openssh git php7 php7-phar php7-json php7-iconv php7-openssl tzdata openntpd vim
+  bash \
+  apache2 \
+  php7-apache2 \
+  curl \
+  ca-certificates \
+  openssl \
+  openssh \
+  git \
+  php7 \
+  php7-phar \
+  php7-json \
+  php7-iconv \
+  php7-openssl \
+  tzdata \
+  openntpd \
+  vim \
+  mysql-client
 
 # Add Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
@@ -64,6 +80,8 @@ COPY php.ini /etc/php7/conf.d/50-setting.ini
 #   MYSQL_HOST='mysql' \
 #   MYSQL_DATABASE='vtiger'
 
+RUN rm -rf /var/www/localhost/htdocs/index.html
+COPY index.php /var/www/localhost/htdocs/index.php
 COPY vtiger-foreground /usr/local/bin/
 RUN chmod +x /usr/local/bin/vtiger-foreground
 CMD ["vtiger-foreground"]

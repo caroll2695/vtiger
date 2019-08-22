@@ -1,0 +1,2 @@
+docker system prune --force
+docker-compose --file=$PWD/docker-compose.yaml up --remove-orphans --build -d

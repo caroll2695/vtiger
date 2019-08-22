@@ -1,22 +1,32 @@
 version: "3"
 
 services:
-  mysql:
-    image: mysql:5.6
+  donkey:
+    image: mariadb/server:10.4
     volumes:
-      - db_data:/var/lib/mysql
+      - tiger_data:/var/lib/mysql
       - ./etc/mysql/conf.d:/etc/mysql/conf.d
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=db
+      - MYSQL_DATABASE=tiger
     restart: always
 
-  vtiger:
+  tiger:
     build: .
     ports:
       - "80:80"
 
+  # test:
+  #   image: mysql:8
+  #   restart: always
+  #   environment:
+  #     - MYSQL_USER=root
+  #     - MYSQL_PWD=secret
+  #   command: |
+  #     sleep 60
+  #     mysql --host=donkey --execute="show databases;"
+
 volumes:
-  db_data:
+  tiger_data:
