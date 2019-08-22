@@ -2,21 +2,25 @@ version: "3"
 
 services:
   donkey:
-    image: mariadb/server:10.4
+    build:
+      context: mariadb
+      dockerfile: Dockerfile
     volumes:
-      - tiger_data:/var/lib/mysql
-      - ./etc/mysql/conf.d:/etc/mysql/conf.d
+      - vtiger_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=tiger
+      - MYSQL_DATABASE=vtiger
     restart: always
 
-  tiger:
-    build: .
+  vtiger:
+    build:
+      context: vtiger
+      dockerfile: Dockerfile
     ports:
       - "80:80"
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PWD=secret
 
   # test:
   #   image: mysql:8
@@ -29,4 +33,4 @@ services:
   #     mysql --host=donkey --execute="show databases;"
 
 volumes:
-  tiger_data:
+  vtiger_data:

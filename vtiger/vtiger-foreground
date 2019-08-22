@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+sleep 20
+mysql --host=donkey --execute="SHOW DATABASES;"
+mysql --host=donkey --execute='set global sql_mode="ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";'
+mysql --host=donkey --execute="CREATE DATABASE IF NOT EXISTS vtiger; \
+                    ALTER DATABASE vtiger CHARACTER SET utf8 COLLATE utf8_general_ci; \
+                    FLUSH PRIVILEGES;"
+
+                    #  CREATE USER 'vtiger'@'%' IDENTIFIED BY 'vtiger'; \
+                    #  UPDATE mysql.user SET password = PASSWORD('vtiger') WHERE user = 'vtiger'; \
+                    #  GRANT ALL PRIVILEGES ON *.* TO 'vtiger'@'%' WITH GRANT OPTION; \
+
+# Apache gets grumpy about PID files pre-existing
+rm -f /usr/local/apache2/logs/httpd.pid
+
+exec httpd -DFOREGROUND "$@"

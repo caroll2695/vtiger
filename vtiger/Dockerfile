@@ -19,7 +19,8 @@ RUN apk update && apk upgrade && apk add \
   tzdata \
   openntpd \
   vim \
-  mysql-client
+  mysql-client \
+  tzdata
 
 # Add Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
@@ -62,9 +63,10 @@ RUN apk add \
   php7-fileinfo \
   php7-ldap \
   php7-apcu \
-  php7-zlib
+  php7-zlib \
+  php7-simplexml
 
-WORKDIR /usr/src/vtiger
+WORKDIR /var/www/localhost/htdocs
 
 #COPY php.ini /usr/local/etc/php/
 COPY php.ini /etc/php7/conf.d/50-setting.ini
@@ -80,8 +82,17 @@ COPY php.ini /etc/php7/conf.d/50-setting.ini
 #   MYSQL_HOST='mysql' \
 #   MYSQL_DATABASE='vtiger'
 
-RUN rm -rf /var/www/localhost/htdocs/index.html
-COPY index.php /var/www/localhost/htdocs/index.php
+# RUN rm -rf /var/www/localhost/htdocs/index.html
+# COPY index.php /var/www/localhost/htdocs/index.php
+
+RUN rm -rf /var/www/localhost/htdocs/ && \
+  cd /var/www/localhost && \
+  wget https://phoenixnap.dl.sourceforge.net/project/vtigercrm/vtiger%20CRM%207.1.0/Core%20Product/vtigercrm7.1.0.tar.gz && \
+  tar xzf vtigercrm7.1.0.tar.gz --directory /var/www/localhost/ && \
+  chown -R apache:apache /var/www/localhost/vtigercrm && \
+  mv /var/www/localhost/vtigercrm /var/www/localhost/htdocs && \
+  rm vtigercrm7.1.0.tar.gz
+
 COPY vtiger-foreground /usr/local/bin/
 RUN chmod +x /usr/local/bin/vtiger-foreground
 CMD ["vtiger-foreground"]

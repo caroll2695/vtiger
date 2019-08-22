@@ -1,0 +1,4 @@
+[submodule "sourcecode"]
+	path = sourcecode
+	url = https://code.vtiger.com/vtiger/vtigercrm.git
+	branch = 7.1.0h3
