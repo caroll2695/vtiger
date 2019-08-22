@@ -85,13 +85,18 @@ COPY php.ini /etc/php7/conf.d/50-setting.ini
 # RUN rm -rf /var/www/localhost/htdocs/index.html
 # COPY index.php /var/www/localhost/htdocs/index.php
 
+# RUN rm -rf /var/www/localhost/htdocs/ && \
+#   cd /var/www/localhost && \
+#   wget https://phoenixnap.dl.sourceforge.net/project/vtigercrm/vtiger%20CRM%207.1.0/Core%20Product/vtigercrm7.1.0.tar.gz && \
+#   tar xzf vtigercrm7.1.0.tar.gz --directory /var/www/localhost/ && \
+#   chown -R apache:apache /var/www/localhost/vtigercrm && \
+#   mv /var/www/localhost/vtigercrm /var/www/localhost/htdocs && \
+#   rm vtigercrm7.1.0.tar.gz
+
+ADD sourcecode /var/www/localhost/sourcecode
 RUN rm -rf /var/www/localhost/htdocs/ && \
-  cd /var/www/localhost && \
-  wget https://phoenixnap.dl.sourceforge.net/project/vtigercrm/vtiger%20CRM%207.1.0/Core%20Product/vtigercrm7.1.0.tar.gz && \
-  tar xzf vtigercrm7.1.0.tar.gz --directory /var/www/localhost/ && \
-  chown -R apache:apache /var/www/localhost/vtigercrm && \
-  mv /var/www/localhost/vtigercrm /var/www/localhost/htdocs && \
-  rm vtigercrm7.1.0.tar.gz
+  chown -R apache:apache /var/www/localhost/sourcecode && \
+  mv /var/www/localhost/sourcecode /var/www/localhost/htdocs
 
 COPY vtiger-foreground /usr/local/bin/
 RUN chmod +x /usr/local/bin/vtiger-foreground

@@ -1,4 +1,4 @@
-[submodule "sourcecode"]
-	path = sourcecode
-	url = https://code.vtiger.com/vtiger/vtigercrm.git
-	branch = 7.1.0h3
+[submodule "vtiger/sourcecode"]
+    path = vtiger/sourcecode
+    url = git@github.com:beacloudgenius/vtigercrmsourcecode.git
+    branch = cloudgenius
