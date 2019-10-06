@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vtiger
+  labels:
+    app: vtiger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vtiger
+  template:
+    metadata:
+      labels:
+        app: vtiger
+    spec:
+      containers:
+      - name: vtiger
+        image: caroll2695/vtiger
+        ports:
+        - containerPort: 7990
+          name: vtiger-http
+        - containerPort: 22
+          name: vtiger-ssh
+        # env:
+        # - name: SERVER_SECURE
+        #   value: "true"
+        # - name: SERVER_SCHEME
+        #   value: "https"
+        # - name: SERVER_PROXY_PORT
+        #   value: "443"
+        # - name: SERVER_PROXY_NAME
+        #   value: ""
+        volumeMounts:
+        - mountPath: /var/vtiger/application-data/vtiger
+          name: vtiger-data
+      volumes:
+        - name: vtiger-data
+          persistentVolumeClaim:
+            claimName: vtiger-pv-claim
