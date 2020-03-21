@@ -18,7 +18,7 @@ spec:
       - name: vtiger
         image: caroll2695/vtiger
         ports:
-        - containerPort: 80
+        - containerPort: 7990
           name: vtiger-http
         - containerPort: 22
           name: vtiger-ssh
